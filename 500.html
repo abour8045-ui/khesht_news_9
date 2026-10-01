@@ -1,11 +1,1 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>خطای سرور</title>
-</head>
-<body>
-    <h1>خطای سرور</h1>
-    <p>متأسفانه مشکلی در اجرای این صفحه رخ داده است.</p>
-</body>
-</html>
+{% extends 'base.html' %}{% block title %}خطای سرور | خشت نیوز{% endblock %}{% block content %}<section class="container error-page"><span>500</span><h1>خطایی در پردازش درخواست رخ داد.</h1><a class="button" href="{{ url_for('index') }}">بازگشت به خانه</a></section>{% endblock %}

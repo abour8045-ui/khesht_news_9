@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}خشت نیوز | رسانه خبری محلی{% endblock %}
+{% block content %}
+<section class="hero container">
+  <div class="hero-copy">
+    <span class="eyebrow">رسانه محلی</span>
+    <h1>خبر را دقیق، تمیز و مستقیم دنبال کنید.</h1>
+    <p>خشت نیوز برای انتشار اخبار واقعی و محتوای ثبت‌شده در سامانه طراحی شده است.</p>
+  </div>
+</section>
+{% if featured %}
+<section class="container section"><div class="section-heading"><h2>اخبار مهم</h2><a href="{{ url_for('search') }}">جستجوی خبر</a></div><div class="featured-grid">{% for item in featured %}{% include '_card.html' %}{% endfor %}</div></section>
+{% endif %}
+<section class="container section"><div class="section-heading"><h2>آخرین اخبار</h2></div>{% if latest %}<div class="news-grid">{% for item in latest %}{% include '_card.html' %}{% endfor %}</div>{% else %}<div class="empty-state"><strong>هنوز خبری منتشر نشده است</strong><span>پس از انتشار نخستین خبر، مطالب در این بخش نمایش داده می‌شوند.</span></div>{% endif %}</section>
+{% if videos %}<section class="container section"><div class="section-heading"><h2>ویدیوها</h2></div><div class="video-grid">{% for item in videos %}<article class="video-card"><video controls preload="metadata" src="{{ url_for('uploaded_video', filename=item.video_filename) }}"></video><div><span class="meta">{{ item.category.name }}</span><h3><a href="{{ url_for('news_detail', news_id=item.id, slug=item.slug) }}">{{ item.title }}</a></h3></div></article>{% endfor %}</div></section>{% endif %}
+<section class="container section"><div class="section-heading"><h2>دسته‌بندی‌ها</h2></div><div class="category-grid">{% for c in categories %}<a class="category-pill" href="{{ url_for('category', slug=c.slug) }}"><span>{{ c.name }}</span><small>{{ c.news|selectattr('status','equalto','published')|list|length }} خبر</small></a>{% endfor %}</div></section>
+{% endblock %}

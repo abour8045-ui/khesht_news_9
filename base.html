@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}خشت نیوز{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}خشت نیوز؛ رسانه خبری محلی{% endblock %}">
+  <meta name="theme-color" content="#101315">
+  {% block seo %}{% endblock %}
+  <style>@font-face{font-family:KheshtLyon;src:url('{{ url_for('static', filename='fonts/Lyon Arabic Display Bold.ttf') }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}:root{--font-family:KheshtLyon,Tahoma,Arial,sans-serif}html,body,button,input,textarea,select{font-family:var(--font-family)!important}</style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="{{ url_for('index') }}" aria-label="صفحه اصلی خشت نیوز">
+      {% if site_logo_exists %}<img src="{{ url_for('static', filename='images/logo.png') }}" alt="خشت نیوز">{% else %}<span class="brand-fallback">خشت نیوز</span>{% endif %}
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">منو</button>
+    <nav id="main-nav" class="main-nav">
+      <a href="{{ url_for('index') }}">خانه</a>
+      <a href="{{ url_for('category', slug='city') }}">شهرستان</a>
+      <a href="{{ url_for('category', slug='province') }}">استان</a>
+      <a href="{{ url_for('category', slug='society') }}">جامعه</a>
+      <a href="{{ url_for('category', slug='sports') }}">ورزش</a>
+      <a href="{{ url_for('category', slug='culture') }}">فرهنگ</a>
+    </nav>
+    <form class="header-search" action="{{ url_for('search') }}" method="get">
+      <label class="sr-only" for="q">جستجو</label>
+      <input id="q" name="q" type="search" placeholder="جستجوی خبر..." value="{{ request.args.get('q','') }}">
+      <button type="submit">جستجو</button>
+    </form>
+    {% if is_admin %}<a class="admin-link" href="{{ url_for('admin_dashboard') }}">پنل خبرنگار</a>{% else %}<a class="admin-link" href="{{ url_for('admin_login') }}">ورود خبرنگار</a>{% endif %}
+  </div>
+</header>
+{% if top_banner_url %}
+<section class="top-banner-wrap" aria-label="نوار تصویری سایت">
+  <div class="container">
+    <a class="top-banner" href="{{ url_for('index') }}">
+      <img src="{{ top_banner_url }}" alt="خشت نیوز" loading="eager">
+    </a>
+  </div>
+</section>
+{% endif %}
+<main>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}<div class="container flash-stack">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><div class="footer-brand">خشت نیوز</div><p>رسانه خبری محلی با تمرکز بر خبر و محتوای واقعی منتشرشده توسط مدیریت.</p></div>
+    <div><h3>دسته‌بندی‌ها</h3><div class="footer-links">{% for c in categories_for_footer %}<a href="{{ url_for('category', slug=c.slug) }}">{{ c.name }}</a>{% endfor %}</div></div>
+    <div><h3>لینک‌های مهم</h3><div class="footer-links"><a href="{{ url_for('index') }}">خانه</a><a href="{{ url_for('search') }}">جستجو</a><a href="{{ url_for('admin_login') }}">ورود خبرنگار</a></div></div>
+  </div>
+  <div class="container copyright">© {{ year_now }} خشت نیوز</div>
+</footer>
+</body>
+</html>

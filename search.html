@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}جستجو{% if q %} برای {{ q }}{% endif %} | خشت نیوز{% endblock %}
+{% block content %}<section class="container section page-heading"><span class="eyebrow">جستجو</span><h1>نتایج جستجو{% if q %}: {{ q }}{% endif %}</h1>{% if q %}<p>{{ news_items|length }} نتیجه پیدا شد.</p>{% endif %}</section><section class="container section">{% if q and news_items %}<div class="news-grid">{% for item in news_items %}{% include '_card.html' %}{% endfor %}</div>{% elif q %}<div class="empty-state"><strong>نتیجه‌ای پیدا نشد</strong><span>عبارت دیگری را جستجو کنید.</span></div>{% else %}<div class="empty-state"><strong>عبارت جستجو را وارد کنید</strong><span>عنوان و متن خبرها جستجو می‌شوند.</span></div>{% endif %}</section>{% endblock %}

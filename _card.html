@@ -1,0 +1,6 @@
+<article class="news-card">
+  <a class="card-media" href="{{ url_for('news_detail', news_id=item.id, slug=item.slug) }}">
+    {% if item.image_filename %}<img loading="lazy" src="{{ url_for('uploaded_image', filename=item.image_filename) }}" alt="{{ item.title }}">{% elif item.video_filename %}<div class="video-placeholder"><span>ویدیو</span><b>▶</b></div>{% else %}<div class="no-media"><span>خبر</span></div>{% endif %}
+  </a>
+  <div class="card-body"><div class="card-meta"><span>{{ item.category.name }}</span><time>{{ item.published_at|localdate }} · {{ item.published_at|localtime }}</time></div><h3><a href="{{ url_for('news_detail', news_id=item.id, slug=item.slug) }}">{{ item.title }}</a></h3>{% if item.summary %}<p>{{ item.summary }}</p>{% endif %}<a class="read-more" href="{{ url_for('news_detail', news_id=item.id, slug=item.slug) }}">مشاهده خبر</a></div>
+</article>

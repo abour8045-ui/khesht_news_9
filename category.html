@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}{{ category.name }} | خشت نیوز{% endblock %}
+{% block content %}<section class="container section page-heading"><span class="eyebrow">دسته‌بندی</span><h1>{{ category.name }}</h1></section><section class="container section">{% if news_items %}<div class="news-grid">{% for item in news_items %}{% include '_card.html' %}{% endfor %}</div>{% else %}<div class="empty-state"><strong>در این دسته هنوز خبری منتشر نشده است</strong><span>این بخش تا زمان انتشار خبر خالی می‌ماند.</span></div>{% endif %}</section>{% endblock %}

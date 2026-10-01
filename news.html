@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ news.title }} | خشت نیوز{% endblock %}
+{% block meta_description %}{{ news.summary|plain_text }}{% endblock %}
+{% block seo %}
+<link rel="canonical" href="{{ request.url }}">
+<meta property="og:type" content="article"><meta property="og:title" content="{{ news.title }}"><meta property="og:description" content="{{ news.summary|plain_text }}"><meta property="og:url" content="{{ request.url }}">{% if news.image_filename %}<meta property="og:image" content="{{ url_for('uploaded_image', filename=news.image_filename, _external=True) }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{{ news.title }}"><meta name="twitter:description" content="{{ news.summary|plain_text }}">
+{% endblock %}
+{% block content %}
+<article class="container article-page">
+  <div class="article-top"><a class="back-link" href="{{ url_for('category', slug=news.category.slug) }}">{{ news.category.name }}</a><div class="article-meta">{{ news.published_at|localdate }} · {{ news.published_at|localtime }}</div></div>
+  <h1>{{ news.title }}</h1>{% if news.summary %}<p class="article-lead">{{ news.summary }}</p>{% endif %}
+  {% if news.image_filename %}<figure class="article-main-image"><img src="{{ url_for('uploaded_image', filename=news.image_filename) }}" alt="{{ news.title }}"></figure>{% endif %}
+  <div class="article-layout"><div class="article-body">{{ news.body|replace('\n','<br>')|safe }}{% if news.video_filename %}<div class="article-video"><video controls preload="metadata" src="{{ url_for('uploaded_video', filename=news.video_filename) }}"></video></div>{% endif %}{% if news.images %}<div class="gallery"><h2>تصاویر</h2><div class="gallery-grid">{% for image in news.images %}<img loading="lazy" src="{{ url_for('uploaded_image', filename=image.filename) }}" alt="تصویر مرتبط با {{ news.title }}">{% endfor %}</div></div>{% endif %}</div><aside class="article-side"><div class="share-box"><h3>اشتراک‌گذاری</h3><button data-share="copy" data-url="{{ request.url }}">کپی لینک</button><a target="_blank" rel="noopener" href="https://wa.me/?text={{ (news.title ~ ' ' ~ request.url)|urlencode }}">WhatsApp</a><a target="_blank" rel="noopener" href="https://t.me/share/url?url={{ request.url|urlencode }}&text={{ news.title|urlencode }}">Telegram</a></div></aside></div>
+</article>
+{% if related %}<section class="container section"><div class="section-heading"><h2>اخبار مرتبط</h2></div><div class="news-grid">{% for item in related %}{% include '_card.html' %}{% endfor %}</div></section>{% endif %}
+{% endblock %}
